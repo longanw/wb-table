@@ -11,6 +11,48 @@
 <link rel="stylesheet" href="./css/index.css">
 </head>
 <body>
+
+<div class="app flex column">
+  <header class="topbar flex ac noselect">
+    <div class="wrapper flex asc">
+      <a class="logo">五笔词库<span>86版</span></a>
+
+      <nav class="navs flex">
+        <a class="nav active">首页</a>
+        <a class="nav">简码表</a>
+        <a class="nav">打字练习</a>
+        <a class="nav">关于</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main flex ac">
+
+    <div class="wrapper flex column">
+      <header class="table-info flex alc">
+        现在单字65535个, 词组16777216个!
+      </header>
+
+      <wc-input placeholder="输入单字查询"></wc-input>
+
+    </div>
+
+  </main>
+
+  <footer class="footer flex ac">
+    <div class="wrapper flex asc">
+      <span>&copy;2022, Yutent™.</span>
+      <span>Power By Anot.js, wcui</span>
+    </div>
+  </footer>
+
   
+</div>
+
+<script type="module">
+import '//unpkg.yutent.top/@bytedo/wcui/dist/form/input.js'
+import '//unpkg.yutent.top/@bytedo/wcui/dist/form/button.js'
+</script>
+
 </body>
 </html>
