@@ -22,7 +22,7 @@ Anot({
     words: 0
   },
   mounted() {
-    fetch('/data/table.txt')
+    fetch('./data/table.txt')
       .then(r => r.text())
       .then(r => {
         // console.log(r)
