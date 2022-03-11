@@ -1545,6 +1545,7 @@
 吇 kbg
 合 wgk wgkf
 吉 fk fkf
+𠮷 fk fkf
 吊 kmh kmhj
 吋 kfy
 同 m mg mgk mgkd
@@ -21002,3 +21003,4 @@
 﨧 qftb
 﨨 qfuf
 﨩 bwvm
+㞌 nbd

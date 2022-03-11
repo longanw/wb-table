@@ -88,14 +88,14 @@ Anot({
       if (reverse) {
         text = text.toUpperCase()
         // 反查时, 直接替换结果
-        if (res18030 && res18030.length) {
+        if (res18030 && res18030[0]) {
           res = res18030
         }
         if (res[0]) {
           res = `【 ${text} 】👉\t${res[0]
             .map(
               t =>
-                `${t}(${(res18030 && res18030.length ? WB_TABLE_18030.get(t) : WB_TABLE.get(t))
+                `${t}(${(res18030 && res18030[0] ? WB_TABLE_18030.get(t) : WB_TABLE.get(t))
                   .join('、')
                   .toUpperCase()})`
             )
@@ -104,7 +104,7 @@ Anot({
           res = `【 ${text} 】👉\t无结果, 请检查你的输入是否正确, 如果确认无误, 可以反馈缺失字库。`
         }
       } else {
-        if (res18030 && res18030.length) {
+        if (res18030) {
           res18030.forEach((it, i) => {
             if (it) {
               res[i] = it
