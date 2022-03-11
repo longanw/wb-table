@@ -92,6 +92,12 @@ wc-switch {
     .field {
       margin-top: 16px;
 
+      &.result {
+        line-height: 2;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+      }
+
       wc-input {
         flex: 1;
       }
