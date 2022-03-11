@@ -13,9 +13,11 @@ import '//unpkg.yutent.top/@bytedo/wcui/dist/form/switch.js'
 import fetch from '//unpkg.yutent.top/@bytedo/fetch/dist/index.js'
 
 import { Enum } from './lib/core.js'
+import FIXED_18030 from './lib/18030.js'
 
-const WB_CODE_NAME = new Enum({ 1: '一级简码', 2: '二级简码', 3: '三级简码', 4: '四级简码' })
+const WB_CODE_NAME = { 1: '一级简码', 2: '二级简码', 3: '三级简码', 4: '四级简码' }
 const WB_TABLE = new Enum()
+const WB_TABLE_18030 = new Enum(FIXED_18030)
 
 Anot.hideProperty(WB_TABLE, 'length', 0)
 
@@ -26,7 +28,7 @@ Anot({
     words: 0,
     result: '',
     filter: {
-      txt: '',
+      text: '',
       table: '86'
     }
   },
@@ -55,49 +57,76 @@ Anot({
 
   methods: {
     search() {
-      var params = { ...this.filter }
+      var { text, table } = this.filter
       var reverse = false
-      var res
+      var res, res18030
 
-      params.txt = params.txt.trim().toLowerCase()
+      text = text.trim().toLowerCase()
 
-      reverse = /^[a-z]{1,4}$/.test(params.txt)
-
-      if (!reverse) {
-        params.txt = params.txt.replace(/[\sa-z]/g, '')
+      if (!text) {
+        return
       }
 
-      if (reverse || params.txt.length === 1) {
-        res = [WB_TABLE.get(params.txt)]
+      reverse = /^[a-z]{1,4}$/.test(text)
+
+      if (!reverse) {
+        text = text.replace(/[\sa-z]/g, '')
+      }
+
+      if (reverse || text.length === 1) {
+        res = [WB_TABLE.get(text)]
+        if (table === '18030') {
+          res18030 = [WB_TABLE_18030.get(text)]
+        }
       } else {
-        res = params.txt.split('').map(t => WB_TABLE.get(t))
+        res = text.split('').map(t => WB_TABLE.get(t))
+        if (table === '18030') {
+          res18030 = text.split('').map(t => WB_TABLE_18030.get(t))
+        }
       }
 
       if (reverse) {
+        text = text.toUpperCase()
+        // 反查时, 直接替换结果
+        if (res18030 && res18030.length) {
+          res = res18030
+        }
         if (res[0]) {
-          res = `【 ${params.txt} 】👉\t${res[0].join('\t\t')}`
+          res = `【 ${text} 】👉\t${res[0]
+            .map(
+              t =>
+                `${t}(${(res18030 && res18030.length ? WB_TABLE_18030.get(t) : WB_TABLE.get(t))
+                  .join('、')
+                  .toUpperCase()})`
+            )
+            .join('\t\t')}`
         } else {
-          res = `【 ${
-            params.txt
-          } 】👉\t无结果, 请检查你的输入是否正确, 如果确认无误, 可以反馈缺失字库。`
+          res = `【 ${text} 】👉\t无结果, 请检查你的输入是否正确, 如果确认无误, 可以反馈缺失字库。`
         }
       } else {
+        if (res18030 && res18030.length) {
+          res18030.forEach((it, i) => {
+            if (it) {
+              res[i] = it
+            }
+          })
+        }
         res = res
           .map((it, i) => {
             if (it) {
-              return `【 ${params.txt[i]} 】👉\t${it
-                .map(t => `${WB_CODE_NAME.get(t.length)}: ${t.toUpperCase()}`)
+              return `【 ${text[i]} 】👉\t${it
+                .map(t => `${WB_CODE_NAME[t.length]}: ${t.toUpperCase()}`)
                 .join('\t\t')}`
             } else {
               return `【 ${
-                params.txt[i]
+                text[i]
               } 】👉\t无结果, 请检查你的输入是否正确, 如果确认无误, 可以反馈缺失字库。`
             }
           })
           .join('\n')
       }
 
-      this.result = `查询耗时: ${t1}ms\n查询结果: \n${res}`
+      this.result = `查询结果: \n${res}`
     }
   }
 })

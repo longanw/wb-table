@@ -48,7 +48,6 @@ export class Enum {
   }
 
   get(k) {
-    console.log('>>>>', k)
     if (this.#dict_k[k]) {
       return this.#dict_k[k]
     } else if (this.#dict_v[k]) {
@@ -56,9 +55,10 @@ export class Enum {
     }
   }
 
-  forEach(callback) {
-    for (let k in this.#dict_k) {
-      if (callback(k, this.#dict_k[k]) === false) {
+  forEach(callback, forV) {
+    var dict = forV ? this.#dict_v : this.#dict_k
+    for (let k in dict) {
+      if (callback(k, dict[k]) === false) {
         break
       }
     }

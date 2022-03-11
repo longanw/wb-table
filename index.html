@@ -35,17 +35,19 @@
 
       <div class="search">
         <section class="field flex alc">
-          <wc-input placeholder="输入汉字或五笔编码查询" :duplex="filter.txt" @submit="search"></wc-input>
+          <wc-input placeholder="输入汉字或五笔编码查询" :duplex="filter.text" @submit="search"></wc-input>
         </section>
 
         <section class="field flex alc">
-          <wc-radio-group :duplex="filter.table">
+          <wc-radio-group :duplex="filter.table" @change="search">
             <wc-radio value="86">86版</wc-radio>
             <wc-radio value="18030" type="danger">18030版(86修正版)</wc-radio>
           </wc-radio-group>
         </section>
 
-        <section class="field result">{{result}}</section>
+        <wc-scroll>
+          <section class="field result">{{result}}</section>
+        </wc-scroll>
 
       </div>
 
@@ -63,7 +65,7 @@
   <footer class="footer flex ac">
     <div class="wrapper flex asc">
       <span>&copy;2022, Yutent™.</span>
-      <span>Power By Anot.js, wcui</span>
+      <span>Power by JavaScript</span>
     </div>
   </footer>
 
