@@ -66,21 +66,41 @@ Anot({
 
       reverse = /^[a-z]{1,4}$/.test(params.txt)
 
-      res = WB_TABLE.get(params.txt)
-
-      if (res) {
-        if (reverse) {
-          res = res.join('\t\t')
-        } else {
-          res = res.map(t => `${WB_CODE_NAME.get(t.length)}: ${t}`).join('\t\t')
-        }
-
-        this.result = `查询结果: 【 ${params.txt} 】\n${res.toUpperCase()}`
-      } else {
-        this.result = `查询结果: 【 ${
-          params.txt
-        } 】\n无结果, 请检查你的输入是否正确, 如果确认无误, 可以反馈缺失字库。`
+      if (!reverse) {
+        params.txt = params.txt.replace(/[\sa-z]/g, '')
       }
+
+      if (params.txt.length > 1) {
+        res = params.txt.split('').map(t => WB_TABLE.get(t))
+      } else {
+        res = [WB_TABLE.get(params.txt)]
+      }
+
+      if (reverse) {
+        if (res[0]) {
+          res = `【 ${params.txt} 】👉\t${res[0].join('\t\t')}`
+        } else {
+          res = `【 ${
+            params.txt
+          } 】👉\t无结果, 请检查你的输入是否正确, 如果确认无误, 可以反馈缺失字库。`
+        }
+      } else {
+        res = res
+          .map((it, i) => {
+            if (it) {
+              return `【 ${params.txt[i]} 】👉\t${it
+                .map(t => `${WB_CODE_NAME.get(t.length)}: ${t.toUpperCase()}`)
+                .join('\t\t')}`
+            } else {
+              return `【 ${
+                params.txt[i]
+              } 】👉\t无结果, 请检查你的输入是否正确, 如果确认无误, 可以反馈缺失字库。`
+            }
+          })
+          .join('\n')
+      }
+
+      this.result = `查询结果: \n${res}`
     }
   }
 })
