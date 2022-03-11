@@ -34,7 +34,8 @@ Anot({
     fetch('./data/table.txt')
       .then(r => r.text())
       .then(r => {
-        // console.log(r)
+        //
+
         r.split('\n').forEach(it => {
           it = it
             .trim()
@@ -47,10 +48,6 @@ Anot({
             WB_TABLE.add(k, it)
           }
         })
-
-        window.foo = WB_TABLE
-
-        console.log(WB_TABLE)
 
         this.single = WB_TABLE.length
       })
@@ -70,10 +67,10 @@ Anot({
         params.txt = params.txt.replace(/[\sa-z]/g, '')
       }
 
-      if (params.txt.length > 1) {
-        res = params.txt.split('').map(t => WB_TABLE.get(t))
-      } else {
+      if (reverse || params.txt.length === 1) {
         res = [WB_TABLE.get(params.txt)]
+      } else {
+        res = params.txt.split('').map(t => WB_TABLE.get(t))
       }
 
       if (reverse) {
@@ -100,7 +97,7 @@ Anot({
           .join('\n')
       }
 
-      this.result = `查询结果: \n${res}`
+      this.result = `查询耗时: ${t1}ms\n查询结果: \n${res}`
     }
   }
 })

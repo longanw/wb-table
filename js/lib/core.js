@@ -48,6 +48,7 @@ export class Enum {
   }
 
   get(k) {
+    console.log('>>>>', k)
     if (this.#dict_k[k]) {
       return this.#dict_k[k]
     } else if (this.#dict_v[k]) {
