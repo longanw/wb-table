@@ -27,8 +27,7 @@ Anot({
     result: '',
     filter: {
       txt: '',
-      table: '86',
-      reverse: false
+      table: '86'
     }
   },
   mounted() {
@@ -60,23 +59,28 @@ Anot({
   methods: {
     search() {
       var params = { ...this.filter }
+      var reverse = false
       var res
 
-      params.txt = params.txt.toLowerCase()
+      params.txt = params.txt.trim().toLowerCase()
 
-      if (params.reverse && !/^[a-z]{1,4}$/.test(params.txt)) {
-        return layer.toast('不合法的五笔编码', 'warning')
-      }
+      reverse = /^[a-z]{1,4}$/.test(params.txt)
 
       res = WB_TABLE.get(params.txt)
 
-      if (params.reverse) {
-        res = res.join('\t')
-      } else {
-        res = res.map(t => `${WB_CODE_NAME.get(t.length)}: ${t}`).join('\t')
-      }
+      if (res) {
+        if (reverse) {
+          res = res.join('\t\t')
+        } else {
+          res = res.map(t => `${WB_CODE_NAME.get(t.length)}: ${t}`).join('\t\t')
+        }
 
-      this.result = `查询结果: 【 ${params.txt} 】\n${res.toUpperCase()}`
+        this.result = `查询结果: 【 ${params.txt} 】\n${res.toUpperCase()}`
+      } else {
+        this.result = `查询结果: 【 ${
+          params.txt
+        } 】\n无结果, 请检查你的输入是否正确, 如果确认无误, 可以反馈缺失字库。`
+      }
     }
   }
 })

@@ -35,7 +35,7 @@
 
       <div class="search">
         <section class="field flex alc">
-          <wc-input placeholder="输入汉字查询编码" :duplex="filter.txt" @submit="search"></wc-input>
+          <wc-input placeholder="输入汉字或五笔编码查询" :duplex="filter.txt" @submit="search"></wc-input>
         </section>
 
         <section class="field flex alc">
@@ -43,8 +43,6 @@
             <wc-radio value="86">86版</wc-radio>
             <wc-radio value="18030" type="danger">18030版(86修正版)</wc-radio>
           </wc-radio-group>
-
-          <wc-switch :duplex="filter.reverse">是否开启反查</wc-switch>
         </section>
 
         <section class="field result">{{result}}</section>
