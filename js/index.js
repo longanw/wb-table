@@ -18,14 +18,15 @@ import FIXED_18030 from './lib/18030.js'
 const WB_CODE_NAME = { 1: '一级简码', 2: '二级简码', 3: '三级简码', 4: '四级简码' }
 const WB_TABLE = new Enum()
 const WB_TABLE_18030 = new Enum(FIXED_18030)
-
-Anot.hideProperty(WB_TABLE, 'length', 0)
+const WB_WORDS = new Enum()
+const WB_DY = new Enum()
 
 Anot({
   $id: 'app',
   state: {
     single: 0,
     words: 0,
+    dy: 0,
     result: '',
     filter: {
       text: '',
@@ -37,7 +38,6 @@ Anot({
       .then(r => r.text())
       .then(r => {
         //
-
         r.split('\n').forEach(it => {
           it = it
             .trim()
@@ -52,6 +52,45 @@ Anot({
         })
 
         this.single = WB_TABLE.length
+      })
+
+    fetch('./data/words.txt')
+      .then(r => r.text())
+      .then(r => {
+        //
+        r.split('\n').forEach(it => {
+          it = it
+            .trim()
+            .split(' ')
+            .map(_ => _.trim())
+
+          let k = it.shift()
+
+          if (k) {
+            WB_WORDS.add(k, it)
+          }
+        })
+
+        this.words = WB_WORDS.length
+      })
+    fetch('./data/dy.txt')
+      .then(r => r.text())
+      .then(r => {
+        //
+        r.split('\n').forEach(it => {
+          it = it
+            .trim()
+            .split(' ')
+            .map(_ => _.trim())
+
+          let k = it.shift()
+
+          if (k) {
+            WB_DY.add(k, it)
+          }
+        })
+
+        this.dy = WB_DY.length
       })
   },
 
@@ -118,9 +157,7 @@ Anot({
                 .map(t => `${WB_CODE_NAME[t.length]}: ${t.toUpperCase()}`)
                 .join('\t\t')}`
             } else {
-              return `【 ${
-                text[i]
-              } 】👉\t无结果, 请检查你的输入是否正确, 如果确认无误, 可以反馈缺失字库。`
+              return `【 ${text[i]} 】👉\t无结果, 请检查你的输入是否正确, 如果确认无误, 可以反馈缺失字库。`
             }
           })
           .join('\n')
