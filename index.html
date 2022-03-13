@@ -31,6 +31,7 @@
     <div class="wrapper flex column">
       <header class="table-info flex alc">
         现有单字<i>{{single}}</i>个, 词组<i>{{words}}</i>个, 异形字<i>{{dy}}</i>个 !
+        <wc-link class="download" type="primary" underline>下载词库</wc-link>
       </header>
 
       <div class="search">
@@ -68,6 +69,24 @@
       <span>Power by JavaScript</span>
     </div>
   </footer>
+
+
+  <wc-layer ref="dl" title="下载选项" mask mask-close>
+    <div class="download-layer">
+      <section class="field flex">
+        <span class="label">词库选择</span>
+        <wc-checkbox-group :duplex="dlOpt.tables">
+          <wc-checkbox readonly value="table">单字库</wc-checkbox>
+          <wc-checkbox readonly value="words">词组库</wc-checkbox>
+          <wc-checkbox readonly value="dy">异形字库</wc-checkbox>
+          <wc-checkbox value="emoji">emoji</wc-checkbox>
+          <wc-checkbox value="nethot">网络热词</wc-checkbox>
+          <wc-checkbox value="tech">计算机术语</wc-checkbox>
+          <wc-checkbox value="personal" type="info">个人词库(自主上传的)</wc-checkbox>
+        </wc-checkbox-group>
+      </section>
+    </div>
+  </wc-layer>
 
   
 </div>

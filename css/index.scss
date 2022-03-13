@@ -10,6 +10,10 @@
     height: 64px;
 
     i {color:var(--color-red-1);}
+
+    .download {
+      margin-left:32px;
+    }
   }
 
   .search {
@@ -56,6 +60,29 @@
       ol {
         padding-left:2em;
         list-style: decimal;
+      }
+    }
+  }
+}
+
+.download-layer {
+  width:640px;
+  height:480px;
+  background:#fff;
+
+  .field {
+    padding:0 16px;
+
+    .label {
+      width:120px;
+      padding-right:16px;
+      line-height: 32px;
+      text-align:right;
+      font-weight:bold;
+      color:var(--color-grey-3);
+
+      &::after {
+        content:" : ";
       }
     }
   }

@@ -8,7 +8,9 @@ import '//unpkg.yutent.top/anot/dist/anot.js'
 import '//unpkg.yutent.top/@bytedo/wcui/dist/layer/index.js'
 import '//unpkg.yutent.top/@bytedo/wcui/dist/form/input.js'
 import '//unpkg.yutent.top/@bytedo/wcui/dist/form/button.js'
+import '//unpkg.yutent.top/@bytedo/wcui/dist/form/link.js'
 import '//unpkg.yutent.top/@bytedo/wcui/dist/form/radio.js'
+import '//unpkg.yutent.top/@bytedo/wcui/dist/form/checkbox.js'
 import '//unpkg.yutent.top/@bytedo/wcui/dist/form/switch.js'
 import fetch from '//unpkg.yutent.top/@bytedo/fetch/dist/index.js'
 
@@ -31,67 +33,55 @@ Anot({
     filter: {
       text: '',
       table: '86'
+    },
+    dlOpt: {
+      tables: ['table', 'words', 'dy']
     }
   },
   mounted() {
-    fetch('./data/table.txt')
-      .then(r => r.text())
-      .then(r => {
-        //
-        r.split('\n').forEach(it => {
-          it = it
-            .trim()
-            .split(' ')
-            .map(_ => _.trim())
+    Promise.all([
+      fetch('./data/table.txt').then(r => r.text()),
+      fetch('./data/words.txt').then(r => r.text()),
+      fetch('./data/dy.txt').then(r => r.text())
+    ]).then(([table, words, dy]) => {
+      //
 
-          let k = it.shift()
+      table.split('\n').forEach(it => {
+        it = it.split(' ')
 
-          if (k) {
-            WB_TABLE.add(k, it)
-          }
-        })
+        let k = it.shift()
 
-        this.single = WB_TABLE.length
+        if (k) {
+          WB_TABLE.add(k, it)
+        }
       })
 
-    fetch('./data/words.txt')
-      .then(r => r.text())
-      .then(r => {
-        //
-        r.split('\n').forEach(it => {
-          it = it
-            .trim()
-            .split(' ')
-            .map(_ => _.trim())
+      words.split('\n').forEach(it => {
+        it = it.split(' ')
 
-          let k = it.shift()
+        let k = it.shift()
 
-          if (k) {
-            WB_WORDS.add(k, it)
-          }
-        })
-
-        this.words = WB_WORDS.length
+        if (k) {
+          WB_WORDS.add(k, it)
+        }
       })
-    fetch('./data/dy.txt')
-      .then(r => r.text())
-      .then(r => {
-        //
-        r.split('\n').forEach(it => {
-          it = it
-            .trim()
-            .split(' ')
-            .map(_ => _.trim())
 
-          let k = it.shift()
+      dy.split('\n').forEach(it => {
+        it = it.split(' ')
 
-          if (k) {
-            WB_DY.add(k, it)
-          }
-        })
+        let k = it.shift()
 
-        this.dy = WB_DY.length
+        if (k) {
+          WB_DY.add(k, it)
+        }
       })
+
+      this.single = WB_TABLE.length
+      this.words = WB_WORDS.length
+      this.dy = WB_DY.length
+    })
+
+    this.$refs.dl.show()
   },
 
   methods: {
