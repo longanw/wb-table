@@ -1,18 +1,22 @@
 @import './common.scss';
 
-
-
 .main {
   flex: 1;
+
+  .wrapper {
+    height: 100%;
+  }
 
   .table-info {
     width: 100%;
     height: 64px;
 
-    i {color:var(--color-red-1);}
+    i {
+      color: var(--color-red-1);
+    }
 
     .download {
-      margin-left:32px;
+      margin-left: 32px;
     }
   }
 
@@ -35,30 +39,54 @@
     }
   }
 
+  .panel {
+    margin-top: 32px;
+    .custom-file {
+      position: relative;
+      width: 160px;
 
+      input {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+      }
+    }
+
+    .tips {
+      color: var(--color-orange-3);
+    }
+
+    .preview {
+      margin-top: 16px;
+      font-family: Menlo;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+  }
+
+  /*  */
   .about {
-    padding:32px 16px;
-
+    padding: 32px 16px;
 
     h2 {
-      font-size:24px;
+      font-size: 24px;
     }
 
     .logs {
-
       .version {
-        margin-top:32px;
-        line-height:2;
-        font-weight:bold;
-        font-size:18px;
+        margin-top: 32px;
+        line-height: 2;
+        font-weight: bold;
+        font-size: 18px;
       }
 
       dd {
-        color:var(--color-grey-3);
+        color: var(--color-grey-3);
       }
 
       ol {
-        padding-left:2em;
+        padding-left: 2em;
         list-style: decimal;
       }
     }
@@ -66,29 +94,39 @@
 }
 
 .download-layer {
-  width:640px;
-  height:480px;
-  background:#fff;
+  width: 640px;
+  padding-bottom: 64px;
+  background: #fff;
 
   .field {
-    padding:0 16px;
+    margin-top: 16px;
+    padding: 0 16px;
 
     .label {
-      width:120px;
-      padding-right:16px;
+      min-width: 120px;
+      padding-right: 16px;
       line-height: 32px;
-      text-align:right;
-      font-weight:bold;
-      color:var(--color-grey-3);
+      text-align: right;
+      font-weight: bold;
+      color: var(--color-grey-3);
 
       &::after {
-        content:" : ";
+        content: ' : ';
       }
+    }
+
+    .tips {
+      margin-left: 16px;
+      line-height: 32px;
+      color: var(--color-orange-3);
+    }
+
+    &.ctrol {
+      padding: 0 128px;
+      margin-top: 64px;
     }
   }
 }
-
-
 
 @media screen and (max-width: 1024px) {
   .topbar,

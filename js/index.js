@@ -35,8 +35,12 @@ Anot({
       table: '86'
     },
     dlOpt: {
+      pos: 'front',
+      reverse: true,
+      pinyin: true,
       tables: ['table', 'words', 'dy']
-    }
+    },
+    preview: ''
   },
   mounted() {
     Promise.all([
@@ -80,8 +84,6 @@ Anot({
       this.words = WB_WORDS.length
       this.dy = WB_DY.length
     })
-
-    this.$refs.dl.show()
   },
 
   methods: {
@@ -93,6 +95,7 @@ Anot({
       text = text.trim().toLowerCase()
 
       if (!text) {
+        this.result = ''
         return
       }
 
@@ -154,6 +157,66 @@ Anot({
       }
 
       this.result = `查询结果: \n${res}`
+    },
+
+    fileChange(ev) {
+      var reader = new FileReader()
+      var file = ev.target.files[0]
+      var all = new Set()
+      var unknow = new Set()
+      console.log(file)
+
+      ev.target.value = ''
+
+      reader.onload = () => {
+        let arr = reader.result
+          .trim()
+          .split('\n')
+          .map(_ => _.trim())
+
+        for (let it of arr) {
+          all.add(it)
+          if (!WB_TABLE.get(it)) {
+            unknow.add(it)
+          }
+        }
+
+        all = Array.from(all)
+        unknow = Array.from(unknow)
+
+        this.preview =
+          `本次上传, 含有 ${arr.length} 个词条(有效词条 ${all.length} 个)。\n` +
+          `其中字库中已经存在 ${all.length - unknow.length}个, 未存在词条 ${
+            unknow.length
+          } 个, 如下:\n\n${unknow.join('\t')}`
+
+        // Promise.all(
+        //   unknow.map(it =>
+        //     fetch('https://www.qqxiuzi.cn/bianma/wubiShow.php', {
+        //       method: 'post',
+        //       body: { text: it, type: 0, version: 0, token: 'ad362ce31bd5584cf7bbcb13b5b08511' }
+        //     }).then(r => r.text())
+        //   )
+        // ).then(r => {
+        //   console.log(r)
+        // })
+
+        // navigator.clipboard.writeText(Array.from(all).join('\n'))
+      }
+
+      reader.readAsText(file)
+    },
+
+    openDownloadPanel() {
+      this.$refs.dl.show()
+    },
+
+    closeDownloadPanel() {
+      this.$refs.dl.close()
+    },
+
+    download() {
+      //
     }
   }
 })

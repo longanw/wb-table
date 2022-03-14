@@ -31,7 +31,7 @@
     <div class="wrapper flex column">
       <header class="table-info flex alc">
         现有单字<i>{{single}}</i>个, 词组<i>{{words}}</i>个, 异形字<i>{{dy}}</i>个 !
-        <wc-link class="download" type="primary" underline>下载词库</wc-link>
+        <wc-link class="download" type="primary" underline @click="openDownloadPanel">下载词库</wc-link>
       </header>
 
       <div class="search">
@@ -46,16 +46,20 @@
           </wc-radio-group>
         </section>
 
-        <wc-scroll>
-          <section class="field result">{{result}}</section>
-        </wc-scroll>
-
+        <section class="field result">{{result}}</section>
+        
       </div>
 
       <div class="panel">
-
-
-
+        <div class="form">
+          <wc-button class="custom-file" icon="plus">
+            <input type="file" @change="fileChange">
+            上传个人词库
+          </wc-button>
+          <span class="tips">(仅需要中文即可, 程序会自动生成五笔编码, 词组一行一个)</span>
+        </div>
+        
+        <div class="preview">{{preview}}</div>
       </div>
 
 
@@ -73,6 +77,7 @@
 
   <wc-layer ref="dl" title="下载选项" mask mask-close>
     <div class="download-layer">
+      
       <section class="field flex">
         <span class="label">词库选择</span>
         <wc-checkbox-group :duplex="dlOpt.tables">
@@ -84,6 +89,32 @@
           <wc-checkbox value="tech">计算机术语</wc-checkbox>
           <wc-checkbox value="personal" type="info">个人词库(自主上传的)</wc-checkbox>
         </wc-checkbox-group>
+      </section>
+
+      <section class="field flex">
+        <span class="label">词库编码位置</span>
+        <wc-radio-group :duplex="dlOpt.pos">
+          <wc-radio value="front">编码前置</wc-radio>
+          <wc-radio value="back">编码后置</wc-radio>
+        </wc-radio-group>
+        <span class="tips">(编码前置时, 自动聚合词组)</span>
+      </section>
+
+      <section class="field flex">
+        <span class="label">生成反查字库</span>
+        <wc-switch :duplex="dlOpt.reverse"></wc-switch>
+        <span class="tips">(输入法支持拼音反查五笔编码时, 请勾选)</span>
+      </section>
+
+      <section class="field flex">
+        <span class="label">是否生成拼音</span>
+        <wc-switch :duplex="dlOpt.pinyin"></wc-switch>
+        <span class="tips">(输入法支持临时拼音时, 请勾选)</span>
+      </section>
+
+      <section class="field flex asc ctrol">
+        <wc-button @click="closeDownloadPanel">取消</wc-button>
+        <wc-button type="primary" @click="download">确认下载</wc-button>
       </section>
     </div>
   </wc-layer>
