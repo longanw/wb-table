@@ -22,6 +22,7 @@ const WB_TABLE = new Enum()
 const WB_TABLE_18030 = new Enum(FIXED_18030)
 const WB_WORDS = new Enum()
 const WB_DY = new Enum()
+const WB_EMOJI = new Enum()
 
 Anot({
   $id: 'app',
@@ -29,13 +30,15 @@ Anot({
     single: 0,
     words: 0,
     dy: 0,
+    emoji: 0,
     result: '',
     filter: {
       text: '',
-      table: '86'
+      version: '86'
     },
     dlOpt: {
       pos: 'front',
+      version: '86',
       reverse: true,
       pinyin: true,
       tables: ['table', 'words', 'dy']
@@ -46,8 +49,9 @@ Anot({
     Promise.all([
       fetch('./data/table.txt').then(r => r.text()),
       fetch('./data/words.txt').then(r => r.text()),
-      fetch('./data/dy.txt').then(r => r.text())
-    ]).then(([table, words, dy]) => {
+      fetch('./data/dy.txt').then(r => r.text()),
+      fetch('./data/emoji.txt').then(r => r.text())
+    ]).then(([table, words, dy, emoji]) => {
       //
 
       table.split('\n').forEach(it => {
@@ -80,15 +84,26 @@ Anot({
         }
       })
 
+      emoji.split('\n').forEach(it => {
+        it = it.split(' ')
+
+        let k = it.shift()
+
+        if (k) {
+          WB_EMOJI.add(k, it)
+        }
+      })
+
       this.single = WB_TABLE.length
       this.words = WB_WORDS.length
       this.dy = WB_DY.length
+      this.emoji = WB_EMOJI.length
     })
   },
 
   methods: {
     search() {
-      var { text, table } = this.filter
+      var { text, version } = this.filter
       var reverse = false
       var res, res18030
 
@@ -107,12 +122,12 @@ Anot({
 
       if (reverse || text.length === 1) {
         res = [WB_TABLE.get(text)]
-        if (table === '18030') {
+        if (version === '18030') {
           res18030 = [WB_TABLE_18030.get(text)]
         }
       } else {
         res = text.split('').map(t => WB_TABLE.get(t))
-        if (table === '18030') {
+        if (version === '18030') {
           res18030 = text.split('').map(t => WB_TABLE_18030.get(t))
         }
       }
@@ -164,7 +179,6 @@ Anot({
       var file = ev.target.files[0]
       var all = new Set()
       var unknow = new Set()
-      console.log(file)
 
       ev.target.value = ''
 
@@ -175,8 +189,9 @@ Anot({
           .map(_ => _.trim())
 
         for (let it of arr) {
+          it = it.replace(/[\w\s\t]+/g, '')
           all.add(it)
-          if (!WB_TABLE.get(it)) {
+          if (!WB_TABLE.get(it) && !WB_WORDS.get(it) && !WB_DY.get(it)) {
             unknow.add(it)
           }
         }
@@ -185,21 +200,13 @@ Anot({
         unknow = Array.from(unknow)
 
         this.preview =
-          `本次上传, 含有 ${arr.length} 个词条(有效词条 ${all.length} 个)。\n` +
+          `【${file.name}】\n本次上传, 含有 ${arr.length} 个词条(有效词条 ${all.length} 个)。\n` +
           `其中字库中已经存在 ${all.length - unknow.length}个, 未存在词条 ${
             unknow.length
           } 个, 如下:\n\n${unknow.join('\t')}`
 
-        // Promise.all(
-        //   unknow.map(it =>
-        //     fetch('https://www.qqxiuzi.cn/bianma/wubiShow.php', {
-        //       method: 'post',
-        //       body: { text: it, type: 0, version: 0, token: 'ad362ce31bd5584cf7bbcb13b5b08511' }
-        //     }).then(r => r.text())
-        //   )
-        // ).then(r => {
-        //   console.log(r)
-        // })
+        window.unknow = unknow
+        console.log(unknow)
 
         // navigator.clipboard.writeText(Array.from(all).join('\n'))
       }

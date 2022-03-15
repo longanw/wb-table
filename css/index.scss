@@ -1,6 +1,7 @@
 @import './common.scss';
 
 .main {
+  overflow: hidden;
   flex: 1;
 
   .wrapper {
@@ -40,7 +41,10 @@
   }
 
   .panel {
+    overflow: hidden;
+    flex: 1;
     margin-top: 32px;
+
     .custom-file {
       position: relative;
       width: 160px;
@@ -57,10 +61,15 @@
       color: var(--color-orange-3);
     }
 
+    .scroll-view {
+      overflow: hidden;
+      flex: 1;
+    }
+
     .preview {
       margin-top: 16px;
       font-family: Menlo;
-      word-wrap: break-word;
+      word-break: keep-all;
       white-space: pre-wrap;
     }
   }
@@ -132,6 +141,10 @@
   .topbar,
   .main {
     padding: 0 16px;
+  }
+
+  .wrapper {
+    width: 100%;
   }
 
   .footer {

@@ -1545,7 +1545,6 @@
 吇 kbg
 合 wgk wgkf
 吉 fk fkf
-𠮷 fk fkf
 吊 kmh kmhj
 吋 kfy
 同 m mg mgk mgkd
@@ -20903,9 +20902,6 @@
 龤 wgkr
 龥 wgkm
 ⺁ rtt
-𠂇 dgt
-𠂉 ttg
-𠃌 nnll
 ⺄ nnll
 㑳 wqbt
 㑇 wqvg
@@ -20930,7 +20926,6 @@
 㱮 gqkm
 㳠 idpy
 ⺧ tfd
-𡗗 dwi
 龸 ipb
 ⺪ nhd
 䁖 hovg
@@ -20940,7 +20935,6 @@
 ⺳ pqb
 ⺶ udr
 ⺷ ugf
-𢦏 fae
 䎱 dilx
 䎬 dilc
 ⺻ vhgd
@@ -20966,7 +20960,6 @@
 䦷 uwwf
 䦶 uqvh
 龺 fjj
-𤇾 oopb
 䲣 haqt
 䲟 qgqb
 䲠 qgdj
@@ -21004,3 +20997,62 @@
 﨨 qfuf
 﨩 bwvm
 㞌 nbd
+䗪 yaoj
+㳇 iwqy
+㕮 kwqy
+㬊 jefc
+㿠 riqn
+䝙 eeaq
+㠇 myin
+㮾 yvcs
+㫰 jyve
+㛹 vwgq
+㧑 ryly
+㙦 wtuf
+䓨 aprm
+㳚 idyt
+䏲 euxt
+䗖 jgkh
+䃅 dujf
+㙍 fccc
+䏡 efiy
+䓛 anbm
+䃎 ddqq
+䓬 ahjj
+㽏 iwgf
+䢼 awbh
+㸌 ofwy
+㛃 dhvv
+㬚 jyct
+㵐 iduw
+䢺 bmbh
+䓫 adsk
+䌹 xmkg
+䐃 elty
+㸆 otfd
+㥄 nfwt
+䂮 dhvd
+㰀 stqi
+㠓 mape
+㭕 sfcy
+䎃 mfng
+䒤 ajf
+㴔 iqvn
+㟃 mngk
+䗴 jttp
+㻬 gffn
+䣘 ipkb
+㛚 vceh
+㳘 iycq
+㬎 jxxo
+䗛 jwhe
+㑊 wyoy
+㺄 qtwj
+㶲 oeh
+㙘 fsvg
+䎖 uljn
+㩼 qqfc
+㹴 qtgq
+䜰 wwkf
+䜮 wwkh
+鿏 qgty

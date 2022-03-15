@@ -4,6 +4,7 @@ package-lock.json
 
 ._*
 
+test.js
 .Spotlight-V100
 .Trashes
 .DS_Store
