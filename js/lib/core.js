@@ -1,3 +1,25 @@
+if (!String.prototype.size) {
+  Object.defineProperty(String.prototype, 'size', {
+    get() {
+      var n = 0
+      for (let it of this) {
+        n++
+      }
+      return n
+    }
+  })
+
+  Object.defineProperty(String.prototype, 'at16', {
+    value(n) {
+      var tmp = []
+      for (let it of this) {
+        tmp.push(it)
+      }
+      return tmp[n]
+    }
+  })
+}
+
 export class Enum {
   #dict_k = Object.create(null)
   #dict_v = Object.create(null)
