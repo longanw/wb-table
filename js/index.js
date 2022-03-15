@@ -15,11 +15,15 @@ import '//unpkg.yutent.top/@bytedo/wcui/dist/form/switch.js'
 import fetch from '//unpkg.yutent.top/@bytedo/fetch/dist/index.js'
 
 import { Enum } from './lib/core.js'
-import FIXED_18030 from './lib/18030.js'
+import FIXED_86F from './lib/86_fixed.js'
+
+const VER_86 = '86'
+const VER_86F = '86f'
 
 const WB_CODE_NAME = { 1: '一级简码', 2: '二级简码', 3: '三级简码', 4: '四级简码' }
-const WB_TABLE = new Enum()
-const WB_TABLE_18030 = new Enum(FIXED_18030)
+const WB_TABLE_2312 = new Enum()
+const WB_TABLE_GBK = new Enum()
+const WB_TABLE_86F = new Enum(FIXED_86F)
 const WB_WORDS = new Enum()
 const WB_DY = new Enum()
 const WB_EMOJI = new Enum()
@@ -27,40 +31,52 @@ const WB_EMOJI = new Enum()
 Anot({
   $id: 'app',
   state: {
-    single: 0,
+    gb2312: 0,
+    gbk: 0,
     words: 0,
     dy: 0,
     emoji: 0,
     result: '',
     filter: {
       text: '',
-      version: '86'
+      version: VER_86
     },
     dlOpt: {
       pos: 'front',
-      version: '86',
+      version: VER_86,
       reverse: true,
       pinyin: true,
-      tables: ['table', 'words', 'dy']
+      tables: ['2312', 'words', 'dy']
     },
     preview: ''
   },
   mounted() {
     Promise.all([
-      fetch('./data/table.txt').then(r => r.text()),
+      fetch('./data/gb2312.txt').then(r => r.text()),
+      fetch('./data/gbk.txt').then(r => r.text()),
       fetch('./data/words.txt').then(r => r.text()),
       fetch('./data/dy.txt').then(r => r.text()),
       fetch('./data/emoji.txt').then(r => r.text())
-    ]).then(([table, words, dy, emoji]) => {
+    ]).then(([gb2312, gbk, words, dy, emoji]) => {
       //
 
-      table.split('\n').forEach(it => {
+      gb2312.split('\n').forEach(it => {
         it = it.split(' ')
 
         let k = it.shift()
 
         if (k) {
-          WB_TABLE.add(k, it)
+          WB_TABLE_2312.add(k, it)
+        }
+      })
+
+      gbk.split('\n').forEach(it => {
+        it = it.split(' ')
+
+        let k = it.shift()
+
+        if (k) {
+          WB_TABLE_GBK.add(k, it)
         }
       })
 
@@ -94,7 +110,8 @@ Anot({
         }
       })
 
-      this.single = WB_TABLE.length
+      this.gb2312 = WB_TABLE_2312.length
+      this.gbk = WB_TABLE_GBK.length
       this.words = WB_WORDS.length
       this.dy = WB_DY.length
       this.emoji = WB_EMOJI.length
@@ -105,7 +122,7 @@ Anot({
     search() {
       var { text, version } = this.filter
       var reverse = false
-      var res, res18030
+      var res, resf
 
       text = text.trim().toLowerCase()
 
@@ -121,28 +138,31 @@ Anot({
       }
 
       if (reverse || text.length === 1) {
-        res = [WB_TABLE.get(text)]
-        if (version === '18030') {
-          res18030 = [WB_TABLE_18030.get(text)]
+        res = [WB_TABLE_2312.get(text) || WB_TABLE_GBK.get(text)]
+        if (version === VER_86F) {
+          resf = [WB_TABLE_86F.get(text)]
         }
       } else {
-        res = text.split('').map(t => WB_TABLE.get(t))
-        if (version === '18030') {
-          res18030 = text.split('').map(t => WB_TABLE_18030.get(t))
+        res = text.split('').map(t => WB_TABLE_2312.get(t) || WB_TABLE_GBK.get(t))
+        if (version === VER_86F) {
+          resf = text.split('').map(t => WB_TABLE_86F.get(t))
         }
       }
 
       if (reverse) {
         text = text.toUpperCase()
         // 反查时, 直接替换结果
-        if (res18030 && res18030[0]) {
-          res = res18030
+        if (resf && resf[0]) {
+          res = resf
         }
         if (res[0]) {
           res = `【 ${text} 】👉\t${res[0]
             .map(
               t =>
-                `${t}(${(res18030 && res18030[0] ? WB_TABLE_18030.get(t) : WB_TABLE.get(t))
+                `${t}(${(resf && resf[0]
+                  ? WB_TABLE_86F.get(t)
+                  : WB_TABLE_2312.get(t) || WB_TABLE_GBK.get(t)
+                )
                   .join('、')
                   .toUpperCase()})`
             )
@@ -151,8 +171,8 @@ Anot({
           res = `【 ${text} 】👉\t无结果, 请检查你的输入是否正确, 如果确认无误, 可以反馈缺失字库。`
         }
       } else {
-        if (res18030) {
-          res18030.forEach((it, i) => {
+        if (resf) {
+          resf.forEach((it, i) => {
             if (it) {
               res[i] = it
             }
@@ -191,7 +211,7 @@ Anot({
         for (let it of arr) {
           it = it.replace(/[\w\s\t]+/g, '')
           all.add(it)
-          if (!WB_TABLE.get(it) && !WB_WORDS.get(it) && !WB_DY.get(it)) {
+          if (!WB_TABLE_2312.get(it) && !WB_WORDS.get(it) && !WB_DY.get(it)) {
             unknow.add(it)
           }
         }

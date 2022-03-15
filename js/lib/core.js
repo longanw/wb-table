@@ -60,10 +60,8 @@ export class Enum {
     var v = this.#dict_k[k]
     if (v) {
       delete this.#dict_k[k]
-      if (Array.isArray(v)) {
-        for (let t of v) {
-          delete this.#dict_v[t]
-        }
+      for (let t of v) {
+        delete this.#dict_v[t]
       }
       this.length--
     }
@@ -87,7 +85,16 @@ export class Enum {
     return this
   }
 
-  toString() {
-    return JSON.stringify(this.#dict_k)
+  toString(forV) {
+    var dict = forV ? this.#dict_v : this.#dict_k
+    var text = ''
+    for (let k in dict) {
+      text += `${k} ${dict[k].join(' ')}\n`
+    }
+    return text.trim()
+  }
+
+  toJson(forV) {
+    return JSON.stringify(forV ? this.#dict_v : this.#dict_k)
   }
 }

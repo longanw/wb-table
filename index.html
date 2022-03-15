@@ -30,7 +30,7 @@
 
     <div class="wrapper flex column">
       <header class="table-info flex alc">
-        现有单字<i>{{single}}</i>个, 词组<i>{{words}}</i>个, 异形字<i>{{dy}}</i>个, emoji<i>{{emoji}}</i>个 !
+        现有单字GB2312(<b>{{gb2312}}</b>) + GBK(<b>{{gbk}}</b>) 个、词组<b>{{words}}</b>个、异形字<b>{{dy}}</b>个、emoji<b>{{emoji}}</b>个 !
         <wc-link class="download" type="primary" underline @click="openDownloadPanel">下载词库</wc-link>
       </header>
 
@@ -42,7 +42,7 @@
         <section class="field flex alc">
           <wc-radio-group :duplex="filter.version" @change="search">
             <wc-radio value="86">86版</wc-radio>
-            <wc-radio value="18030" type="danger">18030版(86修正版)</wc-radio>
+            <wc-radio value="86f" type="danger">86修正版</wc-radio>
           </wc-radio-group>
         </section>
 
@@ -84,14 +84,15 @@
         <span class="label">编码版本</span>
         <wc-radio-group :duplex="dlOpt.version" @change="search">
           <wc-radio value="86">86版</wc-radio>
-          <wc-radio value="18030" type="danger">18030版(86修正版)</wc-radio>
+          <wc-radio value="86f" type="danger">86修正版</wc-radio>
         </wc-radio-group>
       </section>
       
       <section class="field flex">
         <span class="label">词库选择</span>
         <wc-checkbox-group :duplex="dlOpt.tables">
-          <wc-checkbox readonly value="table">单字库</wc-checkbox>
+          <wc-checkbox readonly value="2312">GB2312</wc-checkbox>
+          <wc-checkbox value="gbk">GBK</wc-checkbox>
           <wc-checkbox readonly value="words">词组库</wc-checkbox>
           <wc-checkbox readonly value="dy">异形字库</wc-checkbox>
           <wc-checkbox value="emoji">emoji</wc-checkbox>
