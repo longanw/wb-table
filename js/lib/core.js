@@ -18,6 +18,19 @@ if (!String.prototype.size) {
       return tmp[n]
     }
   })
+  Object.defineProperty(String.prototype, 'split16', {
+    value(pipe) {
+      if (pipe === '') {
+        var tmp = []
+        for (let it of this) {
+          tmp.push(it)
+        }
+        return tmp
+      } else {
+        return this.split(pipe)
+      }
+    }
+  })
 }
 
 export class Enum {
