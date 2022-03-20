@@ -30,7 +30,7 @@
 
     <div class="wrapper flex column">
       <header class="table-info flex alc">
-        现有单字GB2312(<b>{{gb2312}}</b>)个 + GBK(<b>{{gbk}}</b>)个、词组<b>{{words}}</b>个、异形字<b>{{dy}}</b>个、emoji<b>{{emoji}}</b>个 !
+        现有单字GB2312(<b>{{gb2312}}</b>)个 + GBK(<b>{{gbk - gb2312}}</b>)个、异形字<b>{{dy}}</b>个、词组<b>{{words}}</b>个、emoji<b>{{emoji}}</b>个 !
         <wc-link class="download" type="primary" underline @click="openDownloadPanel">下载词库</wc-link>
       </header>
 
@@ -75,6 +75,8 @@
       <span>Power by JavaScript</span>
     </div>
   </footer>
+
+  <a href="//github.com/yutent/wb-table" class="github" target="__target">GitHub</a>
 
 
   <wc-layer ref="dl" title="下载选项" mask mask-close>

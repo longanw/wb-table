@@ -14,7 +14,7 @@ import '//unpkg.yutent.top/@bytedo/wcui/dist/form/checkbox.js'
 import '//unpkg.yutent.top/@bytedo/wcui/dist/form/switch.js'
 import fetch from '//unpkg.yutent.top/@bytedo/fetch/dist/index.js'
 
-import { Enum } from './lib/core.js'
+import { Enum, saveFile, SString } from './lib/core.js'
 import FIXED_86F from './lib/86_fixed.js'
 
 const VER_86 = '86'
@@ -56,8 +56,9 @@ Anot({
       fetch('./data/gbk.txt').then(r => r.text()),
       fetch('./data/words.txt').then(r => r.text()),
       fetch('./data/dy.txt').then(r => r.text()),
+      fetch('./data/extra.txt').then(r => r.text()),
       fetch('./data/emoji.txt').then(r => r.text())
-    ]).then(([gb2312, gbk, words, dy, emoji]) => {
+    ]).then(([gb2312, gbk, words, dy, extra, emoji]) => {
       //
 
       gb2312.split('\n').forEach(it => {
@@ -79,8 +80,8 @@ Anot({
           WB_TABLE_GBK.add(k, it)
         }
       })
-
-      words.split('\n').forEach(it => {
+      //
+      ;(words + extra).split('\n').forEach(it => {
         it = it.split(' ')
 
         let k = it.shift()
@@ -89,6 +90,8 @@ Anot({
           WB_WORDS.add(k, it)
         }
       })
+
+      console.log(WB_WORDS)
 
       dy.split('\n').forEach(it => {
         it = it.split(' ')
@@ -109,6 +112,8 @@ Anot({
           WB_EMOJI.add(k, it)
         }
       })
+
+      WB_TABLE_GBK.concat(WB_TABLE_2312)
 
       this.gb2312 = WB_TABLE_2312.length
       this.gbk = WB_TABLE_GBK.length
@@ -138,12 +143,12 @@ Anot({
       }
 
       if (reverse || text.length === 1) {
-        res = [WB_TABLE_2312.get(text) || WB_TABLE_GBK.get(text)]
+        res = [WB_TABLE_GBK.get(text)]
         if (version === VER_86F) {
           resf = [WB_TABLE_86F.get(text)]
         }
       } else {
-        res = text.split('').map(t => WB_TABLE_2312.get(t) || WB_TABLE_GBK.get(t))
+        res = text.split('').map(t => WB_TABLE_GBK.get(t))
         if (version === VER_86F) {
           resf = text.split('').map(t => WB_TABLE_86F.get(t))
         }
@@ -159,10 +164,7 @@ Anot({
           res = `【 ${text} 】👉\t${res[0]
             .map(
               t =>
-                `${t}(${(resf && resf[0]
-                  ? WB_TABLE_86F.get(t)
-                  : WB_TABLE_2312.get(t) || WB_TABLE_GBK.get(t)
-                )
+                `${t}(${(resf && resf[0] ? WB_TABLE_86F.get(t) : WB_TABLE_GBK.get(t))
                   .join('、')
                   .toUpperCase()})`
             )
@@ -211,7 +213,7 @@ Anot({
         for (let it of arr) {
           it = it.replace(/[\w\s\t]+/g, '')
           all.add(it)
-          if (!WB_TABLE_2312.get(it) && !WB_WORDS.get(it) && !WB_DY.get(it)) {
+          if (!WB_TABLE_GBK.get(it) && !WB_WORDS.get(it) && !WB_DY.get(it)) {
             unknow.add(it)
           }
         }
@@ -225,8 +227,8 @@ Anot({
             unknow.length
           } 个, 如下:\n\n${unknow.join('\t')}`
 
-        window.unknow = unknow
-        console.log(unknow)
+        // window.unknow = unknow
+        // console.log(unknow)
 
         // navigator.clipboard.writeText(Array.from(all).join('\n'))
       }

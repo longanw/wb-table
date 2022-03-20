@@ -1,3 +1,14 @@
+export function saveFile(bin, fileName) {
+  var link = document.createElement('a')
+  link.href = URL.createObjectURL(bin)
+  link.download = fileName
+  // 兼容火狐浏览器对于a链接click无效的问题，将a链接作为子节点放置到body元素下
+  document.body.appendChild(link)
+  link.click()
+  // 下载后移除a链接
+  document.body.removeChild(link)
+}
+
 /**
  * 增强版 String
  */
@@ -102,10 +113,18 @@ export class Enum {
     }
   }
 
+  concat(...args) {
+    for (let li of args) {
+      li.forEach((it, k) => {
+        this.add(k, it)
+      })
+    }
+  }
+
   forEach(callback, forV) {
     var dict = forV ? this.#dict_v : this.#dict_k
     for (let k in dict) {
-      if (callback(k, dict[k]) === false) {
+      if (callback(dict[k], k) === false) {
         break
       }
     }
