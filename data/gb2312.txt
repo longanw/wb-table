@@ -212,7 +212,7 @@
 哺 kge kgey
 补 puh puhy
 埠 fwn fwnf
-不 gi gii i
+不 i gi gii
 布 dmh dmhj
 步 hi hir
 簿 tig tigf
@@ -657,7 +657,7 @@
 洱 ibg
 二 fg fgg
 贰 afm afmi
-发 ntc ntcy v
+发 v ntc ntcy
 罚 ly lyj lyjj
 筏 twa twar
 伐 wat
@@ -3335,7 +3335,7 @@
 油 img
 游 iytb
 酉 sgd
-有 def e
+有 e def
 友 dc dcu
 右 dk dkf
 佑 wdk wdkg
