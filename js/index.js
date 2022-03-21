@@ -84,6 +84,9 @@ Anot({
         }
       })
 
+      // 先使用gb2312, 目的是为了词库顺序以gb2312优先
+      WB_TABLE_GBK.concat(WB_TABLE_2312)
+
       gbk.split('\n').forEach(it => {
         it = it.split(' ')
 
@@ -93,8 +96,7 @@ Anot({
           WB_TABLE_GBK.add(k, it)
         }
       })
-
-      WB_TABLE_GBK.concat(WB_TABLE_2312)
+      window.WB_TABLE_GBK = WB_TABLE_GBK
 
       //
       words.split('\n').forEach(it => {
@@ -347,9 +349,6 @@ Anot({
       // 默认词库
       temp.concat(WB_WORDS)
 
-      // 异形字库
-      temp.concat(WB_DY)
-
       // emoji表情
       if (opt.tables.includes('emoji')) {
         temp.concat(WB_EMOJI)
@@ -364,6 +363,9 @@ Anot({
       if (opt.tables.includes('code')) {
         temp.concat(WB_CODE)
       }
+
+      // 异形字库
+      temp.concat(WB_DY)
 
       // 暂未支持
       // if (opt.tables.includes('personal')) {

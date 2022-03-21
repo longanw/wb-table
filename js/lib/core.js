@@ -165,6 +165,11 @@ export class Enum {
     }
   }
 
+  clone() {
+    var data = JSON.parse(this.toJson())
+    return new Enum(data)
+  }
+
   concat(...args) {
     for (let li of args) {
       li.forEach((it, k) => {

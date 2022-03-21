@@ -40,7 +40,7 @@
 叭 kwy
 吧 kc kcn
 笆 tcb
-八 w wty
+八 wty
 疤 ucv
 巴 cnh cnhn
 拔 rdc rdcy
@@ -52,7 +52,7 @@
 霸 faf fafe
 罢 lfc lfcu
 爸 wqc wqcb
-白 r rrr rrrr
+白 rrr rrrr
 柏 srg
 百 dj djf
 摆 rlf rlfc
@@ -456,7 +456,7 @@
 答 tw twg twgk
 瘩 uaw uawk
 打 rs rsh
-大 d dd dddd
+大 dd dddd
 呆 ks ksu
 歹 gqi
 傣 wdw wdwi
@@ -823,7 +823,7 @@
 哥 sks sksk
 歌 sksw
 搁 rut rutk
-戈 a agnt
+戈 agnt
 鸽 wgkg
 胳 etk etkg
 疙 utn utnv
@@ -856,7 +856,7 @@
 躬 tmdx
 公 wc wcu
 宫 pk pkk pkkf
-弓 x xng xngn
+弓 xng xngn
 巩 amy amyy
 汞 aiu
 拱 raw rawy
@@ -981,7 +981,7 @@
 荷 awsk
 菏 ais aisk
 核 synw
-禾 t ttt tttt
+禾 ttt tttt
 和 t tkg
 何 wsk wskg
 合 wgk wgkf
@@ -1111,7 +1111,7 @@
 豁 pdhk
 活 itd itdg
 伙 wo woy
-火 o ooo oooo
+火 ooo oooo
 获 aqt aqtd
 或 ak akg akgd
 惑 akgn
@@ -1299,7 +1299,7 @@
 巾 mhk
 筋 telb
 斤 rtt rtth
-金 q qqqq
+金 qqqq
 今 wynb
 津 ivfh
 襟 pus pusi
@@ -1465,7 +1465,7 @@
 孔 bnn
 控 rpw rpwa
 抠 raq raqy
-口 k kkkk
+口 kkkk
 扣 rk rkg
 寇 pfqc
 枯 sd sdg
@@ -1597,7 +1597,7 @@
 例 wgq wgqj
 俐 wtj wtjh
 痢 utj utjk
-立 u uu uuu uuuu
+立 uu uuu uuuu
 粒 oug
 沥 idl idln
 隶 vii
@@ -1907,8 +1907,8 @@
 幕 ajdh
 募 ajdl
 慕 ajdn
-木 s ssss
-目 h hhhh
+木 ssss
+目 hhhh
 睦 hf hfw hfwf
 牧 trt trty
 穆 tri trie
@@ -1985,7 +1985,7 @@
 奴 vcy
 努 vcl vclb
 怒 vcn vcnu
-女 v vvv vvvv
+女 vvv vvvv
 暖 jef jefc
 虐 haa haag
 疟 uagd
@@ -2306,7 +2306,7 @@
 纫 xvy xvyy
 扔 re ren
 仍 we wen
-日 j jjjj
+日 jjjj
 戎 ade
 茸 abf
 蓉 apw apwk
@@ -2376,7 +2376,7 @@
 珊 gmm gmmg
 苫 ahk ahkf
 杉 set
-山 m mmm mmmm
+山 mmm mmmm
 删 mmgj
 煽 oynn
 衫 pue puet
@@ -2549,7 +2549,7 @@
 双 cc ccy
 爽 dqq dqqq
 谁 ywyg
-水 i ii iii iiii
+水 ii iii iiii
 睡 ht htg htgf
 税 tuk tukq
 吮 kcq kcqn
@@ -2708,7 +2708,7 @@
 天 gd gdi
 添 igd igdn
 填 ffh ffhw
-田 l lll llll
+田 lll llll
 甜 tdaf
 恬 ntd ntdg
 舔 tdgn
@@ -2756,7 +2756,7 @@
 途 wtp wtpi
 涂 iwt iwty
 屠 nft nftj
-土 f ffff
+土 ffff
 吐 kfg
 兔 qkqy
 湍 imd imdj
@@ -2808,7 +2808,7 @@
 万 dnv
 腕 epq epqb
 汪 ig igg
-王 g ggg gggg
+王 ggg gggg
 亡 ynv
 枉 sgg
 网 mqq mqqi
@@ -3151,7 +3151,7 @@
 蜒 jthp
 岩 mdf
 延 thp thpd
-言 y yyy yyyy
+言 yyy yyyy
 颜 utem
 阎 uqvd
 炎 oo oou
@@ -3242,7 +3242,7 @@
 椅 sds sdsk
 蚁 jyq jyqy
 倚 wds wdsk
-已 n nnnn
+已 nnnn
 乙 nnl nnll
 矣 ct ctd ctdu
 以 c nyw nywy
@@ -3341,7 +3341,7 @@
 佑 wdk wdkg
 釉 tom tomg
 诱 yte yten
-又 c ccc cccc
+又 ccc cccc
 幼 xln
 迂 gfp gfpk
 淤 iywu
@@ -3415,7 +3415,7 @@
 钥 qeg
 岳 rgm rgmj
 粤 tlo tlon
-月 e eee eeee
+月 eee eeee
 悦 nuk nukq
 阅 uuk uukq
 耘 difc
@@ -3583,7 +3583,7 @@
 肢 efc efcy
 脂 ex exj exjg
 汁 ifh
-之 p pp ppp pppp
+之 pp ppp pppp
 织 xkw xkwy
 职 bk bkw bkwy
 直 fh fhf
@@ -3714,7 +3714,7 @@
 仔 wbg
 籽 ob obg
 滓 ipu ipuh
-子 b bb bbb bbbb
+子 bb bbb bbbb
 自 thd
 渍 igm igmy
 字 pb pbf
