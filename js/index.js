@@ -372,6 +372,8 @@ Anot({
 
       let bin = new Blob([temp.toString(opt.pos === 'front')], { type: 'text/plain' })
       saveFile(bin, `wb_table_${opt.pos}.txt`)
+
+      this.closeDownloadPanel()
     }
   }
 })
