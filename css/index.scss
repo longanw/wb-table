@@ -32,6 +32,11 @@
         font-family: Menlo;
         word-wrap: break-word;
         white-space: pre-wrap;
+
+        b {
+          letter-spacing: 2px;
+          color: var(--color-blue-1);
+        }
       }
 
       wc-input {
@@ -103,17 +108,17 @@
 }
 
 .github {
-  position:fixed;
-  right:-30px;
-  top:20px;
-  z-index:9;
-  width:120px;
-  height:22px;
-  line-height:22px;
-  text-align:center;
-  color:#fff;
-  background:var(--color-dark-1);
-  transform:rotate(45deg);
+  position: fixed;
+  right: -30px;
+  top: 20px;
+  z-index: 9;
+  width: 120px;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  color: #fff;
+  background: var(--color-dark-1);
+  transform: rotate(45deg);
 }
 
 .download-layer {
@@ -136,6 +141,10 @@
       &::after {
         content: ' : ';
       }
+    }
+
+    .value {
+      line-height: 32px;
     }
 
     .tips {

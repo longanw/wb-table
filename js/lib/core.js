@@ -1,3 +1,6 @@
+/**
+ * 保存词组
+ */
 export function saveFile(bin, fileName) {
   var link = document.createElement('a')
   link.href = URL.createObjectURL(bin)
@@ -7,6 +10,44 @@ export function saveFile(bin, fileName) {
   link.click()
   // 下载后移除a链接
   document.body.removeChild(link)
+}
+
+/**
+ * 生成五笔编码
+ */
+export function createCode(dict, word) {
+  if (/^[a-zA-Z]+/.test(word)) {
+    return word.match(/^([a-zA-Z]+)/)[1].toLowerCase()
+  }
+
+  switch (word.length) {
+    case 1: {
+      let c = dict.get(word)
+      return c?.shift()
+    }
+    case 2: {
+      let c1 = dict.get(word[0])?.pop()
+      let c2 = dict.get(word[1])?.pop()
+      if (c1 && c2) {
+        return c1.slice(0, 2) + c2.slice(0, 2)
+      } else {
+        console.error(word, '词组中存在未收录单字, 请到github上提交issues')
+        break
+      }
+    }
+    default: {
+      let c1 = dict.get(word[0])?.pop()
+      let c2 = dict.get(word[1])?.pop()
+      let ce = dict.get(word[word.length - 1])?.pop()
+
+      if (c1 && c2 && ce) {
+        return c1.slice(0, 1) + c2.slice(0, 1) + ce.slice(0, 2)
+      } else {
+        console.error(word, '词组中存在未收录单字, 请到github上提交issues')
+        break
+      }
+    }
+  }
 }
 
 /**
@@ -26,6 +67,14 @@ export class SString {
 
   get length() {
     return this.#list.length
+  }
+
+  toLowerCase() {
+    return this.#origin.toLowerCase()
+  }
+
+  toUpperCase() {
+    return this.#origin.toUpperCase()
   }
 
   at(index = 0) {
@@ -106,10 +155,13 @@ export class Enum {
   }
 
   get(k) {
+    // k += ''
+    k = k.toString()
+
     if (this.#dict_k[k]) {
-      return this.#dict_k[k]
+      return [...this.#dict_k[k]]
     } else if (this.#dict_v[k]) {
-      return this.#dict_v[k]
+      return [...this.#dict_v[k]]
     }
   }
 
@@ -119,6 +171,27 @@ export class Enum {
         this.add(k, it)
       })
     }
+  }
+
+  slice(f, t) {
+    var res = []
+    var n = 0
+    if (t === void 0) {
+      t = this.length
+    }
+    if (f < 0) {
+      f += this.length
+    }
+    this.forEach((v, k) => {
+      if (n >= t) {
+        return false
+      }
+      if (n >= f) {
+        res.push({ [k]: [...v] })
+      }
+      n++
+    })
+    return res
   }
 
   forEach(callback, forV) {

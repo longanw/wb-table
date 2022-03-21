@@ -14,7 +14,7 @@ import '//unpkg.yutent.top/@bytedo/wcui/dist/form/checkbox.js'
 import '//unpkg.yutent.top/@bytedo/wcui/dist/form/switch.js'
 import fetch from '//unpkg.yutent.top/@bytedo/fetch/dist/index.js'
 
-import { Enum, saveFile, SString } from './lib/core.js'
+import { Enum, saveFile, SString, createCode } from './lib/core.js'
 import FIXED_86F from './lib/86_fixed.js'
 
 const VER_86 = '86'
@@ -27,6 +27,8 @@ const WB_TABLE_86F = new Enum(FIXED_86F)
 const WB_WORDS = new Enum()
 const WB_DY = new Enum()
 const WB_EMOJI = new Enum()
+const WB_NET = new Enum()
+const WB_CODE = new Enum()
 
 Anot({
   $id: 'app',
@@ -36,6 +38,8 @@ Anot({
     words: 0,
     dy: 0,
     emoji: 0,
+    nethot: 0,
+    code: 0,
     result: '',
     filter: {
       text: '',
@@ -45,20 +49,29 @@ Anot({
       pos: 'front',
       version: VER_86,
       reverse: true,
-      pinyin: true,
+      pinyin: false,
       tables: ['2312', 'words', 'dy']
     },
+    total: 0,
     preview: ''
   },
+
+  watch: {
+    'dlOpt.tables'() {
+      this.calculate()
+    }
+  },
+
   mounted() {
     Promise.all([
       fetch('./data/gb2312.txt').then(r => r.text()),
       fetch('./data/gbk.txt').then(r => r.text()),
       fetch('./data/words.txt').then(r => r.text()),
       fetch('./data/dy.txt').then(r => r.text()),
-      fetch('./data/extra.txt').then(r => r.text()),
-      fetch('./data/emoji.txt').then(r => r.text())
-    ]).then(([gb2312, gbk, words, dy, extra, emoji]) => {
+      fetch('./data/emoji.txt').then(r => r.text()),
+      fetch('./data/nethot.txt').then(r => r.text()),
+      fetch('./data/code.txt').then(r => r.text())
+    ]).then(([gb2312, gbk, words, dy, emoji, nethot, code]) => {
       //
 
       gb2312.split('\n').forEach(it => {
@@ -80,18 +93,19 @@ Anot({
           WB_TABLE_GBK.add(k, it)
         }
       })
+
+      WB_TABLE_GBK.concat(WB_TABLE_2312)
+
       //
-      ;(words + extra).split('\n').forEach(it => {
+      words.split('\n').forEach(it => {
         it = it.split(' ')
 
         let k = it.shift()
 
         if (k) {
-          WB_WORDS.add(k, it)
+          WB_WORDS.add(k, createCode(WB_TABLE_GBK, k))
         }
       })
-
-      console.log(WB_WORDS)
 
       dy.split('\n').forEach(it => {
         it = it.split(' ')
@@ -113,13 +127,38 @@ Anot({
         }
       })
 
-      WB_TABLE_GBK.concat(WB_TABLE_2312)
+      nethot.split('\n').forEach(it => {
+        it = it.split(' ')
+
+        let k = it.shift()
+
+        if (k) {
+          WB_NET.add(k, createCode(WB_TABLE_GBK, k))
+        }
+      })
+      code.split('\n').forEach(it => {
+        it = it.split(' ')
+
+        let k = it.shift()
+
+        if (k) {
+          WB_CODE.add(k, createCode(WB_TABLE_GBK, k))
+        }
+      })
 
       this.gb2312 = WB_TABLE_2312.length
       this.gbk = WB_TABLE_GBK.length
       this.words = WB_WORDS.length
       this.dy = WB_DY.length
       this.emoji = WB_EMOJI.length
+      this.nethot = WB_NET.length
+      this.code = WB_CODE.length
+
+      window.WB_WORDS = WB_WORDS
+      window.WB_NET = WB_NET
+      window.WB_CODE = WB_CODE
+
+      this.calculate()
     })
   },
 
@@ -142,15 +181,18 @@ Anot({
         text = text.replace(/[\sa-z]/g, '')
       }
 
+      text = new SString(text)
+
       if (reverse || text.length === 1) {
+        console.log(text, text + '')
         res = [WB_TABLE_GBK.get(text)]
         if (version === VER_86F) {
           resf = [WB_TABLE_86F.get(text)]
         }
       } else {
-        res = text.split('').map(t => WB_TABLE_GBK.get(t))
+        res = text.split().map(t => WB_TABLE_GBK.get(t))
         if (version === VER_86F) {
-          resf = text.split('').map(t => WB_TABLE_86F.get(t))
+          resf = text.split().map(t => WB_TABLE_86F.get(t))
         }
       }
 
@@ -164,9 +206,9 @@ Anot({
           res = `【 ${text} 】👉\t${res[0]
             .map(
               t =>
-                `${t}(${(resf && resf[0] ? WB_TABLE_86F.get(t) : WB_TABLE_GBK.get(t))
+                `${t}(<b>${(resf && resf[0] ? WB_TABLE_86F.get(t) : WB_TABLE_GBK.get(t))
                   .join('、')
-                  .toUpperCase()})`
+                  .toUpperCase()}</b>)`
             )
             .join('\t\t')}`
         } else {
@@ -183,17 +225,58 @@ Anot({
         res = res
           .map((it, i) => {
             if (it) {
-              return `【 ${text[i]} 】👉\t${it
-                .map(t => `${WB_CODE_NAME[t.length]}: ${t.toUpperCase()}`)
+              return `【 ${text.at(i)} 】👉\t${it
+                .map(t => `${WB_CODE_NAME[t.length]}: <b>${t.toUpperCase()}</b>`)
                 .join('\t\t')}`
             } else {
-              return `【 ${text[i]} 】👉\t无结果, 请检查你的输入是否正确, 如果确认无误, 可以反馈缺失字库。`
+              return `【 ${text.at(
+                i
+              )} 】👉\t无结果, 请检查你的输入是否正确, 如果确认无误, 可以反馈缺失字库。`
             }
           })
           .join('\n')
+        // 词库查询
+        {
+          let extra =
+            WB_WORDS.get(text) ||
+            WB_DY.get(text) ||
+            WB_EMOJI.get(text) ||
+            WB_NET.get(text) ||
+            WB_CODE.get(text)
+
+          if (extra) {
+            let t = extra.shift()
+            res += `\n\n${'-'.repeat(6)} 词库查询结果 ${'-'.repeat(32)}\n【 ${text} 】👉\t${
+              WB_CODE_NAME[t.length]
+            }: <b>${t.toUpperCase()}</b>`
+          }
+        }
       }
 
-      this.result = `查询结果: \n${res}`
+      this.result = `${'-'.repeat(6)} 字库查询结果 ${'-'.repeat(32)}\n${res}`
+    },
+
+    calculate() {
+      var num = this.gb2312
+
+      if (this.dlOpt.tables.includes('gbk')) {
+        num = this.gbk
+      }
+      num += this.words
+      num += this.dy
+
+      if (this.dlOpt.tables.includes('emoji')) {
+        num += this.emoji
+      }
+      if (this.dlOpt.tables.includes('nethot')) {
+        num += this.nethot
+      }
+
+      if (this.dlOpt.tables.includes('code')) {
+        num += this.code
+      }
+
+      this.total = num
     },
 
     fileChange(ev) {
@@ -245,7 +328,50 @@ Anot({
     },
 
     download() {
-      //
+      var opt = { ...this.dlOpt }
+      var temp = new Enum()
+
+      // 生成反查字库
+      if (opt.reverse) {
+        if (opt.tables.includes('gbk')) {
+          temp.concat(WB_TABLE_GBK)
+          let bin = new Blob([WB_TABLE_GBK.toString()], { type: 'text/plain' })
+          saveFile(bin, 'wb_table_gbk_reverse.txt')
+        } else {
+          temp.concat(WB_TABLE_2312)
+          let bin = new Blob([WB_TABLE_2312.toString()], { type: 'text/plain' })
+          saveFile(bin, 'wb_table_gb2312_reverse.txt')
+        }
+      }
+
+      // 默认词库
+      temp.concat(WB_WORDS)
+
+      // 异形字库
+      temp.concat(WB_DY)
+
+      // emoji表情
+      if (opt.tables.includes('emoji')) {
+        temp.concat(WB_EMOJI)
+      }
+
+      // 网络热词
+      if (opt.tables.includes('nethot')) {
+        temp.concat(WB_NET)
+      }
+
+      // 计算机术语
+      if (opt.tables.includes('code')) {
+        temp.concat(WB_CODE)
+      }
+
+      // 暂未支持
+      // if (opt.tables.includes('personal')) {
+      //   temp.concat(WB_PERSONAL)
+      // }
+
+      let bin = new Blob([temp.toString(opt.pos === 'front')], { type: 'text/plain' })
+      saveFile(bin, `wb_table_${opt.pos}.txt`)
     }
   }
 })
