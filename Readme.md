@@ -11,4 +11,4 @@
 
 
 ## 问题反馈
-> 使用过程中, 如发现有错漏、遗漏, 请提交(`issues`)[https://github.com/yutent/wb-table/issues]反馈, 正常情况下, 看到都会处理。
+> 使用过程中, 如发现有错漏、遗漏, 请提交[`issues`](https://github.com/yutent/wb-table/issues)反馈, 正常情况下, 看到都会处理。
