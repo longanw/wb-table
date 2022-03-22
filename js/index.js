@@ -23,6 +23,7 @@ const VER_86F = '86f'
 const WB_CODE_NAME = { 1: '一级简码', 2: '二级简码', 3: '三级简码', 4: '四级简码' }
 const WB_TABLE_2312 = new Enum()
 const WB_TABLE_GBK = new Enum()
+const WB_TABLE_GBK_TEMP = new Enum()
 const WB_TABLE_86F = new Enum(FIXED_86F)
 const WB_WORDS = new Enum()
 const WB_DY = new Enum()
@@ -50,7 +51,7 @@ Anot({
       version: VER_86,
       reverse: true,
       pinyin: false,
-      tables: ['2312', 'words', 'dy']
+      tables: ['2312', 'words']
     },
     total: 0,
     preview: ''
@@ -85,7 +86,7 @@ Anot({
       })
 
       // 先使用gb2312, 目的是为了词库顺序以gb2312优先
-      WB_TABLE_GBK.concat(WB_TABLE_2312)
+      WB_TABLE_GBK_TEMP.concat(WB_TABLE_2312)
 
       gbk.split('\n').forEach(it => {
         it = it.split(' ')
@@ -94,9 +95,9 @@ Anot({
 
         if (k) {
           WB_TABLE_GBK.add(k, it)
+          WB_TABLE_GBK_TEMP.add(k, it)
         }
       })
-      window.WB_TABLE_GBK = WB_TABLE_GBK
 
       //
       words.split('\n').forEach(it => {
@@ -105,7 +106,7 @@ Anot({
         let k = it.shift()
 
         if (k) {
-          WB_WORDS.add(k, createCode(WB_TABLE_GBK, k))
+          WB_WORDS.add(k, createCode(WB_TABLE_GBK_TEMP, k))
         }
       })
 
@@ -135,7 +136,7 @@ Anot({
         let k = it.shift()
 
         if (k) {
-          WB_NET.add(k, createCode(WB_TABLE_GBK, k))
+          WB_NET.add(k, createCode(WB_TABLE_GBK_TEMP, k))
         }
       })
       code.split('\n').forEach(it => {
@@ -144,7 +145,7 @@ Anot({
         let k = it.shift()
 
         if (k) {
-          WB_CODE.add(k, createCode(WB_TABLE_GBK, k))
+          WB_CODE.add(k, createCode(WB_TABLE_GBK_TEMP, k))
         }
       })
 
@@ -155,10 +156,6 @@ Anot({
       this.emoji = WB_EMOJI.length
       this.nethot = WB_NET.length
       this.code = WB_CODE.length
-
-      window.WB_WORDS = WB_WORDS
-      window.WB_NET = WB_NET
-      window.WB_CODE = WB_CODE
 
       this.calculate()
     })
@@ -333,14 +330,14 @@ Anot({
       var opt = { ...this.dlOpt }
       var temp = new Enum()
 
+      temp.concat(WB_TABLE_2312)
+
       // 生成反查字库
       if (opt.reverse) {
         if (opt.tables.includes('gbk')) {
-          temp.concat(WB_TABLE_GBK)
-          let bin = new Blob([WB_TABLE_GBK.toString()], { type: 'text/plain' })
+          let bin = new Blob([WB_TABLE_GBK_TEMP.toString()], { type: 'text/plain' })
           saveFile(bin, 'wb_table_gbk_reverse.txt')
         } else {
-          temp.concat(WB_TABLE_2312)
           let bin = new Blob([WB_TABLE_2312.toString()], { type: 'text/plain' })
           saveFile(bin, 'wb_table_gb2312_reverse.txt')
         }
@@ -364,8 +361,15 @@ Anot({
         temp.concat(WB_CODE)
       }
 
+      // gbk 大字符集, 顺序往后调
+      if (opt.tables.includes('gbk')) {
+        temp.concat(WB_TABLE_GBK)
+      }
+
       // 异形字库
-      temp.concat(WB_DY)
+      if (opt.tables.includes('dy')) {
+        temp.concat(WB_DY)
+      }
 
       // 暂未支持
       // if (opt.tables.includes('personal')) {
