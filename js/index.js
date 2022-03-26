@@ -259,7 +259,7 @@ Anot({
       var num = this.gb2312
 
       if (this.dlOpt.tables.includes('gbk')) {
-        num = this.gbk
+        num += this.gbk
       }
       num += this.words
       num += this.dy
