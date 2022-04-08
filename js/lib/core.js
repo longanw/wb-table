@@ -36,26 +36,27 @@ export function createCode(dict, word) {
       }
     }
 
-    case 4: {
+    case 3: {
       let c1 = dict.get(word[0])?.pop()
       let c2 = dict.get(word[1])?.pop()
       let c3 = dict.get(word[2])?.pop()
-      let c4 = dict.get(word[3])?.pop()
-      if (c1 && c2 && c3 && c4) {
-        return c1[0] + c2[0] + c3[0] + c4[0]
+
+      if (c1 && c2 && c3) {
+        return c1[0] + c2[0] + c3.slice(0, 2)
       } else {
         console.error(word, '词组中存在未收录单字, 请到github上提交issues')
         break
       }
+      break
     }
 
     default: {
       let c1 = dict.get(word[0])?.pop()
       let c2 = dict.get(word[1])?.pop()
+      let c3 = dict.get(word[2])?.pop()
       let ce = dict.get(word[word.length - 1])?.pop()
-
-      if (c1 && c2 && ce) {
-        return c1[0] + c2[0] + ce.slice(0, 2)
+      if (c1 && c2 && c3 && ce) {
+        return c1[0] + c2[0] + c3[0] + ce[0]
       } else {
         console.error(word, '词组中存在未收录单字, 请到github上提交issues')
         break
